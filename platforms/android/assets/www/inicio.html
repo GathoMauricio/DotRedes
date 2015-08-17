@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="Content-Security-Policy" content=" media-src *">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+    <link rel="stylesheet" type="text/css" href="jquery/jquery.mobile.custom.structure.min.css">
+    <link rel="stylesheet" type="text/css" href="css/font.css">
+    <link rel="stylesheet" type="text/css" href="dist/sweetalert.css">
+    <script src="dist/sweetalert.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="jquery/jquery.js"></script>
+    <script type="text/javascript" charset="utf-8" src="jquery/jquery.mobile.custom.min.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="js/Concurrent.Thread.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript">
+
+        //iniciando hilo para enviar pocisión
+        Concurrent.Thread.create(function(){
+                    while(1)
+                    {
+                        //obteniendo coordenadas
+                        navigator.geolocation.getCurrentPosition(getLocation,onError);
+                        //descansando Hilo cada 10 segundos
+                        Concurrent.Thread.sleep(1000*10);
+                    }
+                });
+    </script>
+    <title>Inicio</title>
+</head>
+<body>
+<div id="principal">
+<div data-role="page">
+    <div data-role="header" class="header" data-position="fixed" id="menu">
+        <h1>Dot Redes Mobile</h1>
+        <a href="#panel" id="abre_panel" class="panel-btn"></a>
+    </div>
+
+    <div data-role="panel" id="panel" data-position-fixed="true" data-position="left" data-display="overlay">
+        <ul data-role="listview">
+            <li data-icon="false">
+                <a href="#" class="panel_li"  onclick="loadServicios();">
+                    <span class="icon-list2"></span>
+                    Servicios
+                </a>
+            </li>
+            <li data-icon="false">
+                <a href="#" class="panel_li"  onclick="loadPendientes();">
+                    <span class="icon-list"></span>
+                    Pendientes
+                </a>
+            </li>
+            <li data-icon="false">
+                <a href="#" class="panel_li"  onclick="loadUbicacion();">
+                    <span class="icon-location2"></span>
+                    Mi ubicación
+                </a>
+            </li>
+            <li data-icon="false">
+                <a href="#" class="panel_li"  onclick="cerrarSesion();">
+                    <span class="icon-user-minus"></span>
+                    Cerrar sesion
+                </a>
+            </li>
+            <li data-icon="true">
+                <a href="#" class="panel_li"  onclick="buscarActualizacion(1);">
+                    <center>
+                        <img src="img/logo.png" alt="Logo dot" width="80"/><br/>
+                        <span class="icon-github"></span>
+                        <label style="color:white">Buscar actualización</label>
+                    </center>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+</div>
+</body>
+</html>
