@@ -58,6 +58,9 @@
         },
         "org.apache.cordova.geolocation": {
             "PACKAGE_NAME": "com.katze.dotredes"
+        },
+        "com.flyingsoftgames.ondestroyplugin": {
+            "PACKAGE_NAME": "com.katze.dotredes"
         }
     },
     "dependent_plugins": {

@@ -13,10 +13,10 @@ var app = {
         //habilitando 2do plano
                 window.plugin.backgroundMode.enable();
          cordova.plugins.backgroundMode.setDefaults(
-                                                        {
-                                                        title:'DotRedes-DesafiandoRetos.',
-                                                        text:'Esta App funciona en segundo plano.'
-                                                        });
+         {
+            title:'DotRedes-DesafiandoRetos.',
+            text:'Esta App funciona en segundo plano.'
+         });
     },
     // Recibe el evento disparado y lo muestra en consola
     receivedEvent: function(id) {
@@ -48,7 +48,8 @@ $.post("http://dotredes.dyndns.biz:18888/dot_izzi/mobile/iniciar_sesion.php",{us
 function cerrarSesion()
 {
 
-    swal({
+    /*swal({
+
             title: "atencion",
             text: "Al cerrar sesion se detendra el envio de ubicacion y otras funciones",
             showCancelButton: true,
@@ -62,7 +63,8 @@ function cerrarSesion()
                 window.localStorage.clear();
                 window.location ="index.html";
 
-            });
+            });*/
+            swal("Oops!!","Esta funcion no esta disponible por el momento");
 
 }
 
@@ -100,4 +102,9 @@ console.log(data);
 }
 function onError(error){
 $(".received").html("Ha ocurrido un error");
+}
+
+function loadUbicacion()
+{
+    window.location ="ubicacion.html";
 }

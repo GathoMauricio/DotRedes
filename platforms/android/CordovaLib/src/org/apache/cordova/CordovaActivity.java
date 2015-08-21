@@ -291,9 +291,9 @@ public class CordovaActivity extends Activity {
     public void onDestroy() {
         LOG.d(TAG, "CordovaActivity.onDestroy()");
         super.onDestroy();
-
+        //se comenta la siguiente linea para evitar q la app se cierre por conpleto
         if (this.appView != null) {
-            appView.handleDestroy();
+            //appView.handleDestroy();
         }
     }
 

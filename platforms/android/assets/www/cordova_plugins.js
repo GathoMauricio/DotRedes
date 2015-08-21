@@ -14,6 +14,13 @@ module.exports = [
         ]
     },
     {
+        "file": "plugins/com.flyingsoftgames.ondestroyplugin/www/ondestroyplugin.js",
+        "id": "com.flyingsoftgames.ondestroyplugin.OnDestroyPlugin",
+        "clobbers": [
+            "window.plugins.OnDestroyPlugin"
+        ]
+    },
+    {
         "file": "plugins/org.apache.cordova.device/www/device.js",
         "id": "org.apache.cordova.device.device",
         "clobbers": [
@@ -27,6 +34,7 @@ module.exports.metadata =
     "cordova-plugin-whitelist": "1.0.0",
     "de.appplant.cordova.plugin.background-mode": "0.6.4",
     "org.apache.cordova.geolocation": "0.3.12",
+    "com.flyingsoftgames.ondestroyplugin": "0.1.0",
     "org.apache.cordova.device": "0.3.0"
 }
 // BOTTOM OF METADATA
