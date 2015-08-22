@@ -23,7 +23,7 @@ var app = {
        console.log('Evento recibido: ' + id);
     }
 };
-//inicializa la aplicaci�n
+//inicializa la aplicaci�n
 app.initialize();
 $(document).ready(function(e) {
   $("div:jqmData(role='panel')").css('margin-top',  ($("div:jqmData(role='header')").height()));
@@ -71,7 +71,7 @@ function cerrarSesion()
 function buscarActualizacion(version)
 {
     $.post("http://dotredes.dyndns.biz:18888/dot_izzi/mobile/get_version.php",{},function(data){
-        if(data > version){
+        if(data > 2 ){// la versión se controla desde aquí
         swal({
         title: "Nueva version encontrada",
         text: "Descargar nueva version?",
