@@ -30,19 +30,24 @@ $(document).ready(function(e) {
 });
 
 function iniciarSesion(){
+if(hayConexion())
+{
+
+
 var usuario=$("#txt_usuario_login").prop("value");
 var contrasena=$("#txt_contrasena_login").prop("value");
-$.post("http://dotredes.dyndns.biz:18888/dot_izzi/mobile/iniciar_sesion.php",{usuario:usuario,contrasena:contrasena},function(data){
-    //validando
-    if(data >= 1){
-        //seteando variable de sesion
-        window.localStorage.setItem("id_empleado",data);
+    $.post("http://dotredes.dyndns.biz:18888/dot_izzi/mobile/iniciar_sesion.php",{usuario:usuario,contrasena:contrasena},function(data){
+        //validando
+        if(data >= 1){
+            //seteando variable de sesion
+            window.localStorage.setItem("id_empleado",data);
 
-        window.location ="inicio.html";
-    }else{
-        alert("Los datos introducidos son incorrectos");
-    }
-});
+            loadInicio();
+        }else{
+            alert("Los datos introducidos son incorrectos");
+        }
+    });
+}
 }
 
 function cerrarSesion()
@@ -70,6 +75,9 @@ function cerrarSesion()
 
 function buscarActualizacion(version)
 {
+if(hayConexion())
+{
+
     $.post("http://dotredes.dyndns.biz:18888/dot_izzi/mobile/get_version.php",{},function(data){
         if(data > 2 ){// la versión se controla desde aquí
         swal({
@@ -87,6 +95,7 @@ function buscarActualizacion(version)
             swal("","No hay actualizaciones disponibles","error");
         }
     });
+}else swal("El dispositivo no esta conectado a internet!!!","Por favor revisa que tengas una conexion activa e intenta de nuevo.","error");
 }
 
 function getLocation(location){
@@ -103,8 +112,34 @@ console.log(data);
 function onError(error){
 $(".received").html("Ha ocurrido un error");
 }
-
+function loadInicio()
+{
+    if(hayConexion())
+        window.location ="inicio.html";
+    else swal("El dispositivo no esta conectado a internet!!!","Por favor revisa que tengas una conexion activa e intenta de nuevo.","error");
+}
 function loadUbicacion()
 {
+   if(hayConexion())
     window.location ="ubicacion.html";
+    else swal("El dispositivo no esta conectado a internet!!!","Por favor revisa que tengas una conexion activa e intenta de nuevo.","error");
+}
+function hayConexion() {
+    var networkState = navigator.connection.type;
+        var states = {};
+        states[Connection.UNKNOWN]  = 'Unknown connection';
+        states[Connection.ETHERNET] = 'Ethernet connection';
+        states[Connection.WIFI]     = 'WiFi connection';
+        states[Connection.CELL_2G]  = 'Cell 2G connection';
+        states[Connection.CELL_3G]  = 'Cell 3G connection';
+        states[Connection.CELL_4G]  = 'Cell 4G connection';
+        states[Connection.CELL]     = 'Cell generic connection';
+        states[Connection.NONE]     = 'No network connection';
+    if(states[networkState]=='No network connection')
+    {
+        return false;
+    }else
+    {
+        return true;
+    }
 }

@@ -23,6 +23,10 @@
                         {
                             "xml": "<preference name=\"KeepRunning\" value=\"true\" />",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"NetworkStatus\"><param name=\"android-package\" value=\"org.apache.cordova.networkinformation.NetworkManager\" /></feature>",
+                            "count": 1
                         }
                     ]
                 }
@@ -43,6 +47,10 @@
                         {
                             "xml": "<uses-permission android:name=\"android.permission.ACCESS_FINE_LOCATION\" />",
                             "count": 1
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\" />",
+                            "count": 1
                         }
                     ]
                 }
@@ -60,6 +68,9 @@
             "PACKAGE_NAME": "com.katze.dotredes"
         },
         "com.flyingsoftgames.ondestroyplugin": {
+            "PACKAGE_NAME": "com.katze.dotredes"
+        },
+        "cordova-plugin-network-information": {
             "PACKAGE_NAME": "com.katze.dotredes"
         }
     },

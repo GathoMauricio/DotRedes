@@ -21,6 +21,21 @@ module.exports = [
         ]
     },
     {
+        "file": "plugins/cordova-plugin-network-information/www/network.js",
+        "id": "cordova-plugin-network-information.network",
+        "clobbers": [
+            "navigator.connection",
+            "navigator.network.connection"
+        ]
+    },
+    {
+        "file": "plugins/cordova-plugin-network-information/www/Connection.js",
+        "id": "cordova-plugin-network-information.Connection",
+        "clobbers": [
+            "Connection"
+        ]
+    },
+    {
         "file": "plugins/org.apache.cordova.device/www/device.js",
         "id": "org.apache.cordova.device.device",
         "clobbers": [
@@ -35,6 +50,7 @@ module.exports.metadata =
     "de.appplant.cordova.plugin.background-mode": "0.6.4",
     "org.apache.cordova.geolocation": "0.3.12",
     "com.flyingsoftgames.ondestroyplugin": "0.1.0",
+    "cordova-plugin-network-information": "1.0.1",
     "org.apache.cordova.device": "0.3.0"
 }
 // BOTTOM OF METADATA

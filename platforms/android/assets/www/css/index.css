@@ -17,15 +17,18 @@ body
 }
 #menu
 {
-  background-color: #086A87;
+  /*background-color: #086A87;*/
+  background-color: black;
   color: white;
 }
 #panel
 {
-  background-color: #086A87;
+  /*background-color: #086A87;*/
+   background-color: black;
 }
 a{
-border solid 1px #086A87;
+/*border solid 1px #086A87;*/
+border solid 1px black;
 color:white;
 text-decoration: none;
 }
@@ -70,4 +73,29 @@ text-decoration: none;
 .boton_azul:active {
 	position:relative;
 	top:1px;
+}
+.contenido_inicio{
+width:92%;
+background-color:white;
+border:solid 1px gray;
+padding:5px;
+text-align:left;
+}
+.lbl_nombre{
+color:blue;
+padding:5px;
+}
+.lbl_datos
+{
+color:gray;
+font-size:12px;
+padding-left:40px;
+}
+.contenido_servicio
+{
+padding:5px;
+font-size:14px;
+}
+td{
+text-align:center;
 }
