@@ -2,7 +2,7 @@ package com.katze.dotredes;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-
+//Esta clase es la que se ejecuta desde el manifest para iniciar la app al iniciar el sistema
 public class BootReceiver extends BroadcastReceiver{
 
     @Override

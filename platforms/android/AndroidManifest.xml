@@ -13,6 +13,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!--Este receiver control q la app se inicie junto con el sistema como servicio-->
         <receiver
             android:name=".BootReceiver"
             android:enabled="true"
@@ -22,6 +23,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
+        <!--End Receiver-->
         <service android:name="de.appplant.cordova.plugin.background.ForegroundService" />
     </application>
     <uses-sdk android:minSdkVersion="10" android:targetSdkVersion="22" />
