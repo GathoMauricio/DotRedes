@@ -19,17 +19,19 @@
     <script type="text/javascript" src="js/Concurrent.Thread.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
     <script type="text/javascript">
-
+    var latMapa;
+    var lonMapa;
         //iniciando hilo para enviar pocisión
         Concurrent.Thread.create(function(){
                     while(1)
                     {
                         //obteniendo coordenadas
                         navigator.geolocation.getCurrentPosition(getLocation,onError);
-                        //descansando Hilo cada 30 segundos
-                        Concurrent.Thread.sleep(1000*30);
+                        //descansando Hilo cada 1 segundos
+                        Concurrent.Thread.sleep(1000);
                     }
                 });
+
     </script>
     <title>Inicio</title>
 </head>
@@ -90,17 +92,17 @@ var map;
 var marcador;
 function initialize()
 {
-   var punto = new google.maps.LatLng(19.3737678,-98.9813983);
+   var punto = new google.maps.LatLng(22.6872612,-101.658844);
    var myOptions =
    {
-     zoom: 16, //nivel de zoom para poder ver de cerca.
+     zoom: 6, //nivel de zoom para poder ver de cerca.
      center: punto,
      mapTypeId: google.maps.MapTypeId.ROADMAP //Tipo de mapa inicial, satélite para ver las pirámides
    };
      map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
      google.maps.Map.prototype.markers = new Array();
      marcador = new google.maps.Marker({
-     position:new google.maps.LatLng(19.3737678,-98.9813983),
+     position:new google.maps.LatLng(22.6872612,-101.658844),
      map:map,
      });
         Concurrent.Thread.create(
@@ -112,7 +114,9 @@ function initialize()
               var lat=location.coords.latitude;
               var lon=location.coords.longitude;
                marcador.setPosition(new google.maps.LatLng(lat,lon));
-               //map.setCenter(new google.maps.LatLng(lat,lon));
+               map.setCenter(new google.maps.LatLng(lat,lon));
+               map.setZoom(16);
+               console.log("Actualizando mapa ubicación: Lat:"+lat+"/Lon:"+lon);
               });
              Concurrent.Thread.sleep(1000);
             }
