@@ -19,7 +19,10 @@
 
 package com.katze.dotredes;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+
 import org.apache.cordova.*;
 
 public class MainActivity extends CordovaActivity
@@ -30,8 +33,9 @@ public class MainActivity extends CordovaActivity
         super.onCreate(savedInstanceState);
         // Set by <content src="index.html" /> in config.xml
         loadUrl(launchUrl);
-
+        startService(new Intent(this,Servicio.class));
 
     }
+
 
 }

@@ -9,6 +9,7 @@ var app = {
     },
     // Se dispara cuando el dispositivo ha terminado de cargar
     onDeviceReady: function() {
+
         app.receivedEvent('deviceready');
         //habilitando 2do plano
                 window.plugin.backgroundMode.enable();
@@ -79,7 +80,7 @@ if(hayConexion())
 {
 
     $.post("http://dotredes.dyndns.biz:18888/dot_izzi/mobile/get_version.php",{},function(data){
-        if(data > 2 ){// la versión se controla desde aquí
+        if(data > 3 ){// la versión se controla desde aquí
         swal({
         title: "Nueva version encontrada",
         text: "Descargar nueva version?",

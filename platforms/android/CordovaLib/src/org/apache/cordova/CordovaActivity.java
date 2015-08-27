@@ -118,8 +118,12 @@ public class CordovaActivity extends Activity {
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                     WindowManager.LayoutParams.FLAG_FULLSCREEN);
         } else {
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN,
-                    WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+            /*getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN,
+                    WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);*/
+            //FORZANDO PANTALLA COMPLETA
+
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
         }
 
         super.onCreate(savedInstanceState);
@@ -253,21 +257,22 @@ public class CordovaActivity extends Activity {
         // receive user input. Workaround for some devices (Samsung Galaxy Note 3 at least)
         this.getWindow().getDecorView().requestFocus();
 
-        this.appView.handleResume(this.keepRunning);
+        //this.appView.handleResume(this.keepRunning);
     }
 
     /**
      * Called when the activity is no longer visible to the user.
      */
+
     @Override
     protected void onStop() {
-        super.onStop();
-        LOG.d(TAG, "Stopped the activity.");
-
+        LOG.d(TAG, "Deteniendo.");
+        //super.onStop();
+        this.onStart();
         if (this.appView == null) {
             return;
         }
-        this.appView.handleStop();
+       this.appView.handleStart();
     }
 
     /**
@@ -276,6 +281,7 @@ public class CordovaActivity extends Activity {
     @Override
     protected void onStart() {
         super.onStart();
+
         LOG.d(TAG, "Started the activity.");
 
         if (this.appView == null) {
@@ -290,10 +296,10 @@ public class CordovaActivity extends Activity {
     @Override
     public void onDestroy() {
         LOG.d(TAG, "CordovaActivity.onDestroy()");
-        super.onDestroy();
-        //se comenta la siguiente linea para evitar q la app se cierre por conpleto
+        //super.onDestroy();
+        super.onStart();
         if (this.appView != null) {
-            //appView.handleDestroy();
+            appView.handleStart();
         }
     }
 

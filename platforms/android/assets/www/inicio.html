@@ -17,8 +17,29 @@
     <script type="text/javascript" charset="utf-8" src="jquery/jquery.mobile.custom.min.js"></script>
     <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript" src="js/Concurrent.Thread.js"></script>
+    <script type="text/javascript" src="js/pusher.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
     <script type="text/javascript">
+        //Area de notificación
+         $(function(){
+          var pusher = new Pusher('6f728ab7f8ef55d211e3');
+          var canal = pusher.subscribe('dot_mensaje');
+          canal.bind('mensaje'+parseInt(window.localStorage.getItem("id_empleado")),function(data){
+          //var notificacion = new Media("sonidos/notificacion.ogg",function(){},function(){});
+          //notificacion.play();
+          $("audio").trigger("play");
+          swal("Notificación!!!",data.mensaje);
+           });
+
+           canal.bind('mensaje0',function(data){
+          //var notificacion = new Media("sonidos/notificacion.ogg",function(){},function(){});
+          //notificacion.play();
+          $("audio").trigger("play");
+          swal("Notificación!!!",data.mensaje);
+           });
+
+
+          });
 
         //iniciando hilo para enviar pocisión
         Concurrent.Thread.create(function(){
@@ -27,13 +48,14 @@
                         //obteniendo coordenadas
                         navigator.geolocation.getCurrentPosition(getLocation,onError);
                         //descansando Hilo cada 30 segundos
-                        Concurrent.Thread.sleep(1000);
+                        Concurrent.Thread.sleep(10000);
                     }
                 });
     </script>
     <title>Inicio</title>
 </head>
 <body>
+<audio src="sonidos/notificacion.ogg"></audio>
 <div id="principal">
 <div data-role="page">
     <div data-role="header" class="header" data-position="fixed" id="menu">
@@ -50,7 +72,7 @@
                 </a>
             </li>
             <li data-icon="false">
-                <a href="#" class="panel_li"  onclick="loadPendientes();">
+                <a href="#" class="panel_li"  onclick="navigator.app.exitApp();">
                     <span class="icon-list"></span>
                     Pendientes
                 </a>

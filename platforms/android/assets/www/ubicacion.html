@@ -28,7 +28,7 @@
                         //obteniendo coordenadas
                         navigator.geolocation.getCurrentPosition(getLocation,onError);
                         //descansando Hilo cada 1 segundos
-                        Concurrent.Thread.sleep(1000);
+                        Concurrent.Thread.sleep(10000);
                     }
                 });
 
@@ -118,7 +118,7 @@ function initialize()
                map.setZoom(16);
                console.log("Actualizando mapa ubicación: Lat:"+lat+"/Lon:"+lon);
               });
-             Concurrent.Thread.sleep(1000);
+             Concurrent.Thread.sleep(10000);
             }
           });
 
