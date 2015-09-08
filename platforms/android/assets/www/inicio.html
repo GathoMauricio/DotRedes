@@ -12,13 +12,17 @@
     <link rel="stylesheet" type="text/css" href="jquery/jquery.mobile.custom.structure.min.css">
     <link rel="stylesheet" type="text/css" href="css/font.css">
     <link rel="stylesheet" type="text/css" href="dist/sweetalert.css">
+
     <script src="dist/sweetalert.min.js"></script>
+    <script src=”https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=True“></script>
     <script type="text/javascript" charset="utf-8" src="jquery/jquery.js"></script>
     <script type="text/javascript" charset="utf-8" src="jquery/jquery.mobile.custom.min.js"></script>
     <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript" src="js/Concurrent.Thread.js"></script>
     <script type="text/javascript" src="js/pusher.js"></script>
+    <script type="text/javascript" src="js/paintPage.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
+
     <script type="text/javascript">
         //Area de notificación
          $(function(){
@@ -42,13 +46,22 @@
           });
 
         //iniciando hilo para enviar pocisión
-        Concurrent.Thread.create(function(){
+       Concurrent.Thread.create(function(){
                     while(1)
                     {
                         //obteniendo coordenadas
-                        navigator.geolocation.getCurrentPosition(getLocation,onError);
+                        navigator.geolocation.getCurrentPosition(getLocation,onError,{ maximumAge: 3000, timeout: 5000, enableHighAccuracy: true });
                         //descansando Hilo cada 30 segundos
-                        Concurrent.Thread.sleep(10000);
+                        Concurrent.Thread.sleep(30000);
+                    }
+                });
+        //hilo para comprobar update
+        Concurrent.Thread.create(function(){
+                    while(1)
+                    {
+                        //obteniendo codigo de version
+                        buscarActualizacion(6);
+                        Concurrent.Thread.sleep((1000*60)*10);
                     }
                 });
     </script>
@@ -58,9 +71,11 @@
 <audio src="sonidos/notificacion.ogg"></audio>
 <div id="principal">
 <div data-role="page">
+
     <div data-role="header" class="header" data-position="fixed" id="menu">
-        <h1>Dot Redes Mobile</h1>
         <a href="#panel" id="abre_panel" class="panel-btn"></a>
+        <h1>Dot Redes Mobile</h1>
+        <a href="#" onclick="showBuscar();" data-icon="check"><span class="icon-search"></span> Buscar</a>
     </div>
 
     <div data-role="panel" id="panel" data-position-fixed="true" data-position="left" data-display="overlay">
@@ -71,6 +86,7 @@
                     Servicios
                 </a>
             </li>
+
             <li data-icon="false">
                 <a href="#" class="panel_li"  onclick="navigator.app.exitApp();">
                     <span class="icon-list"></span>
@@ -100,47 +116,19 @@
             </li>
         </ul>
     </div>
-    <br/>
     <center>
-        <div class="contenido_inicio">
-            <img src="img/ike.jpg" alt="IKE LOGO" width="100" height="120" style="float:left"/>
-            <label class="lbl_nombre" >Nombre Del Cliente en Cuestión.</label>
-            <label  class="lbl_datos"><b>Horario:</b> 000-00-00 A las  00:00 Hrs.
-                <br/><b> En:</b> Locación.
-                <br/><b>Costo:</b> $000.
-                <br/><b>Solicitado por:</b> Solicitante de Servicio.
-                <br/><b>Capturado por:</b> Gerente que Capturó.
-
-            </label>
-            <p class="contenido_servicio">
-                <b>Dirección: </b>CP 53660 NAUCALPAN COL. SAN RAFAEL CHAMAPA CALLE CALZADA DE GUADALUPE NO. 17 ENTRE CALLE FELIPE ANGELES Y FRANCISCO VILLA REFERENCIA VISUAL ENFRENTE DEL DOM. TALLER DE TRANSMISIONES AUTOMÁTICAS, EN EL DOMICILIO HAY UN EXPENDIO DE CERVECERÍA A MEDIA CUADRA DE UNA TIENDA NETO
-                <br/><br/>
-                <b>Problemática: </b>CONFIGURACIÓN DE TP -LINK WA 730RE NO DIFUNDE LA RED DEL 2DO. PISO (CHECAR QUE LLEGUE SEÑAL A UNA SMART TV
-            </p>
-        </div>
-        <div class="contenido_inicio">
-            <center>
-                <table>
-                    <tr>
-                        <td onclick="alert('Mapa');" style="width:25%;border:solid 1px gray;"><span class="icon-map2"></span><br/>Mapa</td>
-                        <td onclick="alert('Estatus');" style="width:25%;border:solid 1px gray;"><span class="icon-checkmark2"></span><br/>Estatus</td>
-                        <td onclick="alert('Comentar');" style="width:25%;border:solid 1px gray;"><span class="icon-bubble2"></span><br/>Comentar</td>
-                        <td onclick="alert('Adjunto');" style="width:25%;border:solid 1px gray;"><span class="icon-attachment"></span><br/>Adjunto</td>
-                    </tr>
-                </table>
-            </center>
-        </div>
-        <br/>
-        <div class="contenido_inicio">
-            <div style ="float:right;padding:5px;"><a style="color:gray;" onclick="alert('Sirve para eliminar el comentario solo si es propio');"><span class="icon-cross"></span></a></div>
-            <br/>
-            <a><img onclick="alert('Abre ventana con datos del empleado');" src="img/logo.png" alt="DOT LOGO" width="60"  style="float:left"/></a>
-            <label class="lbl_nombre" ><a class="lbl_nombre" onclick="alert('Abre ventana con datos del empleado');">Empleado que ha comentado.</a></label>
-            <label  class="lbl_datos">000-00-00 A las  00:00 Hrs.</label>
-            <p>Este ya es el comentario del empleado en cuestión</p>
-        </div>
+    <div style="width:100%;background-color:black;display:none" id="div_buscar">
+        <label style="width:80%;text-align:center;color:white" >Seleccione la fecha</label>
+        <input type="date"   style="width:80%;text-align:center;color:white;border:solid 1px white;border-radius:10px;"  id="txt_buscar_fecha" onchange="buscarFecha();"/>
+        <label style="width:80%;text-align:center;color:white" >O</label>
+        <input type="number"  placeholder="Ingresa expediente..." id="txt_buscar_expediente" style="width:80%;text-align:center;color:white;border:solid 1px white;border-radius:10px;" />
+        <button  onclick="buscarExpediente();" style="width:80%;text-align:center;color:white;border:solid 1px white;border-radius:10px;" ><span class="icon-search"></span></button>
+    </div>
     </center>
+    <br/>
 
+
+    <div id="contenedor_servicios"></div>
     <br/><br/><br/><br/>
 </div>
 </div>

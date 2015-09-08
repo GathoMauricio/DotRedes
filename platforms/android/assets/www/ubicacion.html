@@ -13,6 +13,7 @@
     <link rel="stylesheet" type="text/css" href="css/font.css">
     <link rel="stylesheet" type="text/css" href="dist/sweetalert.css">
     <script src="dist/sweetalert.min.js"></script>
+    <script src=”https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=True“></script>
     <script type="text/javascript" charset="utf-8" src="jquery/jquery.js"></script>
     <script type="text/javascript" charset="utf-8" src="jquery/jquery.mobile.custom.min.js"></script>
     <script type="text/javascript" src="cordova.js"></script>
@@ -26,9 +27,9 @@
                     while(1)
                     {
                         //obteniendo coordenadas
-                        navigator.geolocation.getCurrentPosition(getLocation,onError);
-                        //descansando Hilo cada 1 segundos
-                        Concurrent.Thread.sleep(10000);
+                        navigator.geolocation.getCurrentPosition(getLocation,onError,{ maximumAge: 3000, timeout: 5000, enableHighAccuracy: true });
+                        //descansando Hilo cada 30 segundos
+                        Concurrent.Thread.sleep(30000);
                     }
                 });
 
@@ -113,12 +114,13 @@ function initialize()
               navigator.geolocation.getCurrentPosition(function(location){
               var lat=location.coords.latitude;
               var lon=location.coords.longitude;
+              var aprox=location.coords.accuracy;
                marcador.setPosition(new google.maps.LatLng(lat,lon));
                map.setCenter(new google.maps.LatLng(lat,lon));
                map.setZoom(16);
-               console.log("Actualizando mapa ubicación: Lat:"+lat+"/Lon:"+lon);
-              });
-             Concurrent.Thread.sleep(10000);
+               console.log("Actualizando mapa ubicación: Lat:"+lat+"/Lon:"+lon+" Aprox:"+aprox);
+              },function(e){},{ maximumAge: 3000, timeout: 5000, enableHighAccuracy: true });
+             Concurrent.Thread.sleep(30000);
             }
           });
 

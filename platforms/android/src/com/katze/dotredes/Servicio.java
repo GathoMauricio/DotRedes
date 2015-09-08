@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Looper;
 
 /**
  * Created by Mauricio on 26/08/2015.
@@ -21,6 +22,7 @@ public class Servicio extends Service implements LocationListener{
     }
     public void onCreate(){
         super.onCreate();
+
             }
             public void onStart(Intent intent,int startId){
                 System.out.println("El servicio ha comenzado");
@@ -28,11 +30,14 @@ public class Servicio extends Service implements LocationListener{
                 Thread hilo = new Thread(new Runnable() {
                     @Override
                     public void run() {
+                        //Looper.prepare();
                         while(true)
                         {
 
                             try {
-                                Thread.sleep(10000);
+                                getLocation();
+                                System.out.println("Servicio");
+                                Thread.sleep(5000);
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
@@ -40,7 +45,7 @@ public class Servicio extends Service implements LocationListener{
 
             }
         });
-        hilo.start();
+        //hilo.start();
     }
     public void onDestroy(){
         super.onDestroy();
@@ -54,26 +59,29 @@ public class Servicio extends Service implements LocationListener{
             isGPS=locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
             isRED=locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
+            System.out.println("GPS IS "+isGPS);
+            System.out.println("RED IS "+isRED);
+
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
-        if(isGPS)
-        {
-            locationManager.requestLocationUpdates(locationManager.GPS_PROVIDER,1000,10,this);
-            location=locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER);
-            System.out.println("JAVA GPS");
-            System.out.println("Latitud: "+location.getLatitude());
-            System.out.println("Longitud: "+location.getLongitude());
-        }else{
-            if(isRED)
-            {
-                locationManager.requestLocationUpdates(locationManager.NETWORK_PROVIDER,1000,1,this);
-                location=locationManager.getLastKnownLocation(locationManager.NETWORK_PROVIDER);
+
+            try {
+                System.out.println("Intentando conectar con GPS");
+                locationManager.requestLocationUpdates(locationManager.GPS_PROVIDER, 1000, 1, this);
+                location = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER);
+                System.out.println("Location IS " + location);
+                System.out.println("JAVA GPS");
+                System.out.println("Latitud: " + location.getLatitude());
+                System.out.println("Longitud: " + location.getLongitude());
+            }catch (Exception e) {
+                System.out.println("No hubo respuesta del GPS enviando datos de RED");
+                locationManager.requestLocationUpdates(locationManager.NETWORK_PROVIDER, 1000, 1, this);
+                location = locationManager.getLastKnownLocation(locationManager.NETWORK_PROVIDER);
                 System.out.println("JAVA RED");
-                System.out.println("Latitud: "+location.getLatitude());
-                System.out.println("Longitud: "+location.getLongitude());
+                System.out.println("Latitud: " + location.getLatitude());
+                System.out.println("Longitud: " + location.getLongitude());
             }
-        }
     }
     @Override
     public void onLocationChanged(Location location) {
