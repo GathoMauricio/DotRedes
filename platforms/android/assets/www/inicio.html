@@ -12,6 +12,7 @@
     <link rel="stylesheet" type="text/css" href="jquery/jquery.mobile.custom.structure.min.css">
     <link rel="stylesheet" type="text/css" href="css/font.css">
     <link rel="stylesheet" type="text/css" href="dist/sweetalert.css">
+    <link rel="stylesheet" type="text/css" href="themes/facebook/facebook.css">
 
     <script src="dist/sweetalert.min.js"></script>
     <script src=”https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=True“></script>
@@ -29,10 +30,21 @@
           var pusher = new Pusher('6f728ab7f8ef55d211e3');
           var canal = pusher.subscribe('dot_mensaje');
           canal.bind('mensaje'+parseInt(window.localStorage.getItem("id_empleado")),function(data){
-          //var notificacion = new Media("sonidos/notificacion.ogg",function(){},function(){});
-          //notificacion.play();
-          $("audio").trigger("play");
-          swal("Notificación!!!",data.mensaje);
+           $("audio").trigger("play");
+          navigator.notification.vibrate(1000);
+
+
+           swal({
+           title: "Notificación!",
+           text: data.mensaje,
+           type: "success",
+           showCancelButton: true,
+           confirmButtonColor: "#58ACFA",
+           confirmButtonText: "Ir al expediente",
+           cancelButtonText:"Cancelar",
+           closeOnConfirm: true },
+           function(){  irExpediente(data.expediente);  });
+
            });
 
            canal.bind('mensaje0',function(data){

@@ -1,4 +1,31 @@
 var expediente_photo="TeSt";
+function buscarActualizacion(version)
+{
+
+
+    $.post("http://dotredes.dyndns.biz:18888/dot_izzi/mobile/get_version.php",{},function(data){
+        if(data > 11 ){// la versión se controla desde aquí
+        //vibrando y reproduciendo notificación
+        navigator.notification.vibrate(1000);
+        $("audio").trigger("play");
+        swal({
+        title: "Nueva version encontrada",
+        text: "Descargar nueva version?",
+        showCancelButton: true,
+        confirmButtonColor: "#086A87",
+        confirmButtonText: "Descargar",
+        closeOnConfirm: false },
+        function(){
+        swal("","La descarga comenzara en un momento", "success");
+        navigator.app.loadUrl("http://dotredes.dyndns.biz:18888/dot_izzi/mobile/DotRedes.apk", { openExternal:true });
+        });
+        }else{
+            //swal("","No hay actualizaciones disponibles","error");
+            console.log("No hay actualizaciones disponibles");
+        }
+    });
+
+}
 var app = {
     // Constructor
     initialize: function() {
@@ -102,33 +129,7 @@ function cerrarSesion()
 
 }
 
-function buscarActualizacion(version)
-{
 
-
-    $.post("http://dotredes.dyndns.biz:18888/dot_izzi/mobile/get_version.php",{},function(data){
-        if(data > 9 ){// la versión se controla desde aquí
-        //vibrando y reproduciendo notificación
-        navigator.notification.vibrate(1000)
-        $("audio").trigger("play");
-        swal({
-        title: "Nueva version encontrada",
-        text: "Descargar nueva version?",
-        showCancelButton: true,
-        confirmButtonColor: "#086A87",
-        confirmButtonText: "Descargar",
-        closeOnConfirm: false },
-        function(){
-        swal("","La descarga comenzara en un momento", "success");
-        navigator.app.loadUrl("http://dotredes.dyndns.biz:18888/dot_izzi/mobile/DotRedes.apk", { openExternal:true });
-        });
-        }else{
-            //swal("","No hay actualizaciones disponibles","error");
-            console.log("No hay actualizaciones disponibles");
-        }
-    });
-
-}
 
 function getLocation(location){
 $(".received").html("Lat: "+location.coords.latitude+"<br>Lon"+location.coords.longitude);
@@ -345,7 +346,7 @@ function comentar(expediente)
     },function(data){
         $.post("http://dotredes.dyndns.biz:18888/dot_izzi/mobile/get_caja.php",{id_expediente:expediente},function(data){
            $("#caja_"+expediente).html(data);
-           swal("OK!", "Tu comentario se ha insertado con éxito", "success"); });
+           /*swal("OK!", "Tu comentario se ha insertado con éxito", "success");*/ });
            });
      });
 
@@ -402,7 +403,25 @@ function buscarExpediente()
             //}
         }
 }
+function irExpediente(expediente)
+{
+    $.post("http://dotredes.dyndns.biz:18888/dot_izzi/mobile/get_expedientes_expediente.php",{
+    id_empleado:window.localStorage.getItem("id_empleado"),
+    expediente:expediente
+    },function(data){
+    if(data.length>0)
+    {
+     $("#contenedor_servicios").html(data);
+     $("#txt_buscar_expediente").prop("value","");
+     }else
+     {
+       swal("El expediente solicitado no existe","Favor de verificar el número de expediente","warning");
+        $("#txt_buscar_expediente").prop("value","");
+     }
 
+     });
+
+}
 function abrirMapa(lat,lon)
 {
     if(lat==0&&lon==0)
@@ -567,4 +586,24 @@ function showBuscar()
         isBuscar=true;
     }
 
+}
+function documentacion()
+{
+    var html='<div style="width:100%;height:300px;overflow:scroll;">';
+    html+='<a href="http://dotredes.dyndns.biz:18888/dot_izzi/mobile/documentacion/manual_procedimientos.pdf" style="color:blue;">Manual de procedimientos</a><br><br>';
+    html+='<a href="http://dotredes.dyndns.biz:18888/dot_izzi/mobile/documentacion/refuerzo_lineamientos.pdf" style="color:blue;">Refuerzo de Lineamientos</a><br><br>';
+    html+='<a href="http://dotredes.dyndns.biz:18888/dot_izzi/mobile/documentacion/capacitacion_red_proveedores.pptx" style="color:blue;">Capacitación Red Proveedores IKE asistencia</a><br><br>';
+    html+='<a href="http://dotredes.dyndns.biz:18888/dot_izzi/mobile/documentacion/checklist.pdf" style="color:blue;">CheckList</a><br><br>';
+    html+='<a href="http://dotredes.dyndns.biz:18888/dot_izzi/mobile/documentacion/cobertura.pdf" style="color:blue;">Cobertura</a><br><br>';
+    html+='<a href="http://dotredes.dyndns.biz:18888/dot_izzi/mobile/documentacion/faq.pdf" style="color:blue;">FAQ</a><br><br>';
+    html+='<a href="http://dotredes.dyndns.biz:18888/dot_izzi/mobile/documentacion/equipos_modems_emtas.docx" style="color:blue;">Equipos (Modems. emtas)</a><br><br>';
+    html+='<a href="http://dotredes.dyndns.biz:18888/dot_izzi/mobile/documentacion/emta_arris_tg862g.pdf" style="color:blue;">EMTA ARRIS TG862</a><br><br>';
+    html+='<a href="http://dotredes.dyndns.biz:18888/dot_izzi/mobile/documentacion/emta_ubbee_u10c059.pdf" style="color:blue;">EMTA UBBEE U10C059</a><br><br>';
+    html+='<a href="http://dotredes.dyndns.biz:18888/dot_izzi/mobile/documentacion/Ubee_dvw_324.pdf" style="color:blue;">UBEE DVW 324</a><br><br>';
+    html+='</div>';
+    swal({
+    html:true,
+    title:'Documentación',
+    text:html
+    });
 }
