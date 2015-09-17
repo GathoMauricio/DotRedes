@@ -4,7 +4,7 @@ function buscarActualizacion(version)
 
 
     $.post("http://dotredes.dyndns.biz:18888/dot_izzi/mobile/get_version.php",{},function(data){
-        if(data > 11 ){// la versión se controla desde aquí
+        if(data > 13 ){// la versión se controla desde aquí
         //vibrando y reproduciendo notificación
         navigator.notification.vibrate(1000);
         $("audio").trigger("play");
@@ -38,15 +38,23 @@ var app = {
     // Se dispara cuando el dispositivo ha terminado de cargar
     onDeviceReady: function() {
     app.receivedEvent('deviceready');
+
     console.log(navigator.camera);
      pictureSource = navigator.camera.PictureSourceType;
      destinationType = navigator.camera.DestinationType;
+
     $.post("http://dotredes.dyndns.biz:18888/dot_izzi/mobile/get_expedientes.php",{
                 id_empleado:window.localStorage.getItem("id_empleado")
                 },function(data){
                     $("#contenedor_servicios").html(data);
 
                 });
+    $.post("http://dotredes.dyndns.biz:18888/dot_izzi/mobile/get_pendientes.php",{
+                    id_empleado:window.localStorage.getItem("id_empleado")
+                    },function(data){
+                        $("#contenedor_pendiente").html(data);
+
+                    });
 
 
         //Mensajes push
@@ -331,7 +339,7 @@ function comentar(expediente)
     text: "Escribe algo a cerca de este servicio:",
     type: "input",
     showCancelButton: true,
-    closeOnConfirm: false,
+    closeOnConfirm: true,
     animation: "slide-from-top",
     inputPlaceholder: "Ingresa el texto" },
     function(inputValue){
@@ -606,4 +614,67 @@ function documentacion()
     title:'Documentación',
     text:html
     });
+}
+function pendiente()
+{
+    window.location="pendiente.html";
+}
+function terminarPendiente(id)
+{
+    swal({
+        title: "Cerrando pendiente!",
+        text: "Escribe algo a cerca de este pendiente:",
+        type: "input",
+        showCancelButton: true,
+        closeOnConfirm: true,
+        animation: "slide-from-top",
+        inputPlaceholder: "Ingresa el texto" },
+        function(inputValue){
+        if (inputValue === false) return false;
+        if (inputValue === "") {
+        swal.showInputError("El campo no debe estár vacio!");
+        return false   }
+        $.post("http://dotredes.dyndns.biz:18888/dot_izzi/control/terminar_pendiente.php",{
+            id:id,
+            comentario:inputValue
+        },function(data){
+
+                $.post("http://dotredes.dyndns.biz:18888/dot_izzi/mobile/get_pendientes.php",{
+                 id_empleado:window.localStorage.getItem("id_empleado")
+                 },function(data){
+                  $("#contenedor_pendiente").html(data);
+
+                  });
+               });
+         });
+}
+function comentarPendiente(pendiente)
+{
+    swal({
+            title: "Comentario!",
+            text: "Escribe algo a cerca de este pendiente:",
+            type: "input",
+            showCancelButton: true,
+            closeOnConfirm: true,
+            animation: "slide-from-top",
+            inputPlaceholder: "Ingresa el texto" },
+            function(inputValue){
+            if (inputValue === false) return false;
+            if (inputValue === "") {
+            swal.showInputError("El campo no debe estár vacio!");
+            return false   }
+            $.post("http://dotredes.dyndns.biz:18888/dot_izzi/control/agregar_comentario_pendiente.php",{
+                empleado:window.localStorage.getItem("id_empleado"),
+                id_pendiente:pendiente,
+                comentario:inputValue
+            },function(data){
+                    $.post("http://dotredes.dyndns.biz:18888/dot_izzi/mobile/get_pendientes.php",{
+                     id_empleado:window.localStorage.getItem("id_empleado")
+
+                     },function(data){
+                      $("#contenedor_pendiente").html(data);
+
+                      });
+                   });
+             });
 }

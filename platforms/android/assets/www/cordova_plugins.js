@@ -93,6 +93,13 @@ module.exports = [
         ]
     },
     {
+        "file": "plugins/org.apache.cordova.splashscreen/www/splashscreen.js",
+        "id": "org.apache.cordova.splashscreen.SplashScreen",
+        "clobbers": [
+            "navigator.splashscreen"
+        ]
+    },
+    {
         "file": "plugins/org.apache.cordova.device/www/device.js",
         "id": "org.apache.cordova.device.device",
         "clobbers": [
@@ -258,6 +265,7 @@ module.exports.metadata =
     "cordova-plugin-file-transfer": "1.2.1",
     "org.apache.cordova.vibration": "0.3.13",
     "com.pushbots.push": "1.2.7",
+    "org.apache.cordova.splashscreen": "1.0.0",
     "org.apache.cordova.device": "0.3.0",
     "cordova-plugin-file": "3.0.0",
     "android.support.v4": "21.0.1"

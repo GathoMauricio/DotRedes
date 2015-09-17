@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="Content-Security-Policy" content=" media-src *">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+    <link rel="stylesheet" type="text/css" href="jquery/jquery.mobile.custom.structure.min.css">
+    <link rel="stylesheet" type="text/css" href="css/font.css">
+    <link rel="stylesheet" type="text/css" href="dist/sweetalert.css">
+    <link rel="stylesheet" type="text/css" href="themes/facebook/facebook.css">
+
+    <script src="dist/sweetalert.min.js"></script>
+    <script src=”https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=True“></script>
+    <script type="text/javascript" charset="utf-8" src="jquery/jquery.js"></script>
+    <script type="text/javascript" charset="utf-8" src="jquery/jquery.mobile.custom.min.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="js/Concurrent.Thread.js"></script>
+    <script type="text/javascript" src="js/pusher.js"></script>
+    <script type="text/javascript" src="js/paintPage.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+
+    <script type="text/javascript">
+        //Area de notificación
+         $(function(){
+          var pusher = new Pusher('6f728ab7f8ef55d211e3');
+          var canal = pusher.subscribe('dot_mensaje');
+          canal.bind('mensaje'+parseInt(window.localStorage.getItem("id_empleado")),function(data){
+           $("audio").trigger("play");
+          navigator.notification.vibrate(1000);
+
+
+           swal({
+           title: "Notificación!",
+           text: data.mensaje,
+           type: "success",
+           showCancelButton: true,
+           confirmButtonColor: "#58ACFA",
+           confirmButtonText: "Ir al expediente",
+           cancelButtonText:"Cancelar",
+           closeOnConfirm: true },
+           function(){  irExpediente(data.expediente);  });
+
+           });
+
+           canal.bind('mensaje0',function(data){
+          //var notificacion = new Media("sonidos/notificacion.ogg",function(){},function(){});
+          //notificacion.play();
+          $("audio").trigger("play");
+          swal("Notificación!!!",data.mensaje);
+           });
+
+
+          });
+
+        //iniciando hilo para enviar pocisión
+       Concurrent.Thread.create(function(){
+                    while(1)
+                    {
+                        //obteniendo coordenadas
+                        navigator.geolocation.getCurrentPosition(getLocation,onError,{ maximumAge: 3000, timeout: 5000, enableHighAccuracy: true });
+                        //descansando Hilo cada 30 segundos
+                        Concurrent.Thread.sleep(30000);
+                    }
+                });
+        //hilo para comprobar update
+        Concurrent.Thread.create(function(){
+                    while(1)
+                    {
+                        //obteniendo codigo de version
+                        buscarActualizacion(6);
+                        Concurrent.Thread.sleep((1000*60)*10);
+                    }
+                });
+    </script>
+    <title>Inicio</title>
+</head>
+<body>
+<audio src="sonidos/notificacion.ogg"></audio>
+<div id="principal">
+    <div data-role="page">
+
+        <div data-role="header" class="header" data-position="fixed" id="menu">
+            <a href="#panel" id="abre_panel" class="panel-btn"></a>
+            <h1>Dot Redes Mobile</h1>
+
+        </div>
+
+        <div data-role="panel" id="panel" data-position-fixed="true" data-position="left" data-display="overlay">
+            <ul data-role="listview">
+                <li data-icon="false">
+                    <a href="#" class="panel_li"  onclick="loadInicio();">
+                        <span class="icon-list2"></span>
+                        Servicios
+                    </a>
+                </li>
+                <li data-icon="false">
+                    <a href="#" class="panel_li"  onclick="documentacion();">
+                        <span class="icon-folder-open"></span>
+                        Documentación
+                    </a>
+                </li>
+
+                <li data-icon="false">
+                    <a href="#" class="panel_li"  onclick="pendiente();">
+                        <span class="icon-list"></span>
+                        Pendientes
+                    </a>
+                </li>
+                <li data-icon="false">
+                    <a href="#" class="panel_li"  onclick="loadUbicacion();">
+                        <span class="icon-location2"></span>
+                        Mi ubicación
+                    </a>
+                </li>
+                <li data-icon="false">
+                    <a href="#" class="panel_li"  onclick="cerrarSesion();">
+                        <span class="icon-user-minus"></span>
+                        Cerrar sesion
+                    </a>
+                </li>
+                <li data-icon="true">
+                    <a href="#" class="panel_li"  onclick="buscarActualizacion(2);">
+                        <center>
+                            <img src="img/logo_white.png" alt="Logo dot" width="80"/><br/>
+                            <span class="icon-github"></span>
+                            <label style="color:white">Buscar actualización</label>
+                        </center>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <br/>
+
+        <center><div id="contenedor_pendiente"></div></center>
+
+        <br/><br/><br/><br/>
+    </div>
+</div>
+
+</body>
+</html>
