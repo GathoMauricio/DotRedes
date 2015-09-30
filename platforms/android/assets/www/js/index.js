@@ -3,8 +3,8 @@ function buscarActualizacion(version)
 {
 
 
-    $.post("http://dotredes.dyndns.biz:18888/dot_izzi/mobile/get_version.php",{},function(data){
-        if(data > 13 ){// la versión se controla desde aquí
+    $.post("http://dotredes.dyndns.biz/dot_izzi/mobile/get_version.php",{},function(data){
+        if(data > 14 ){// la versión se controla desde aquí
         //vibrando y reproduciendo notificación
         navigator.notification.vibrate(1000);
         $("audio").trigger("play");
@@ -17,7 +17,7 @@ function buscarActualizacion(version)
         closeOnConfirm: false },
         function(){
         swal("","La descarga comenzara en un momento", "success");
-        navigator.app.loadUrl("http://dotredes.dyndns.biz:18888/dot_izzi/mobile/DotRedes.apk", { openExternal:true });
+        navigator.app.loadUrl("http://dotredes.dyndns.biz/dot_izzi/mobile/DotRedes.apk", { openExternal:true });
         });
         }else{
             //swal("","No hay actualizaciones disponibles","error");
@@ -43,13 +43,13 @@ var app = {
      pictureSource = navigator.camera.PictureSourceType;
      destinationType = navigator.camera.DestinationType;
 
-    $.post("http://dotredes.dyndns.biz:18888/dot_izzi/mobile/get_expedientes.php",{
+    $.post("http://dotredes.dyndns.biz/dot_izzi/mobile/get_expedientes.php",{
                 id_empleado:window.localStorage.getItem("id_empleado")
                 },function(data){
                     $("#contenedor_servicios").html(data);
 
                 });
-    $.post("http://dotredes.dyndns.biz:18888/dot_izzi/mobile/get_pendientes.php",{
+    $.post("http://dotredes.dyndns.biz/dot_izzi/mobile/get_pendientes.php",{
                     id_empleado:window.localStorage.getItem("id_empleado")
                     },function(data){
                         $("#contenedor_pendiente").html(data);
@@ -90,7 +90,7 @@ if(hayConexion())
 
 var usuario=$("#txt_usuario_login").prop("value");
 var contrasena=$("#txt_contrasena_login").prop("value");
-    $.post("http://dotredes.dyndns.biz:18888/dot_izzi/mobile/iniciar_sesion.php",{usuario:usuario,contrasena:contrasena},function(data){
+    $.post("http://dotredes.dyndns.biz/dot_izzi/mobile/iniciar_sesion.php",{usuario:usuario,contrasena:contrasena},function(data){
         //validando
         if(data >= 1){
             //seteando variable de sesion
@@ -141,7 +141,7 @@ function cerrarSesion()
 
 function getLocation(location){
 $(".received").html("Lat: "+location.coords.latitude+"<br>Lon"+location.coords.longitude);
-$.post("http://dotredes.dyndns.biz:18888/dot_izzi/mobile/update_geolocalizacion.php",
+$.post("http://dotredes.dyndns.biz/dot_izzi/mobile/update_geolocalizacion.php",
 {
 id_empleado:window.localStorage.getItem("id_empleado"),
 lat:location.coords.latitude,
@@ -202,13 +202,13 @@ function cambiarEstatus(expediente,estatus)
             					},
             					function()
             					{
-            							$.post("http://dotredes.dyndns.biz:18888/dot_izzi/control/cambiar_estatus.php",{
+            							$.post("http://dotredes.dyndns.biz/dot_izzi/control/cambiar_estatus.php",{
             								estatus:estatus,
             								expediente:expediente,
             								solucion:""
             							},function(data)
             								{
-            								$.post("http://dotredes.dyndns.biz:18888/dot_izzi/mobile/get_caja.php",{id_expediente:expediente},function(data){
+            								$.post("http://dotredes.dyndns.biz/dot_izzi/mobile/get_caja.php",{id_expediente:expediente},function(data){
 
             								$("#caja_"+expediente).html(data);
             								swal("El cambio se realizó con éxito.","","success");
@@ -218,7 +218,7 @@ function cambiarEstatus(expediente,estatus)
             break;
         case 2:
 
-            $.post("http://dotredes.dyndns.biz:18888/dot_izzi/mobile/validar_estatus_anterior.php",{
+            $.post("http://dotredes.dyndns.biz/dot_izzi/mobile/validar_estatus_anterior.php",{
             id_empleado:window.localStorage.getItem("id_empleado"),
             id_expediente:expediente
             },function(data){
@@ -240,14 +240,14 @@ function cambiarEstatus(expediente,estatus)
                                    },
                                      function()
                                      {
-                                        $.post("http://dotredes.dyndns.biz:18888/dot_izzi/control/cambiar_estatus.php",
+                                        $.post("http://dotredes.dyndns.biz/dot_izzi/control/cambiar_estatus.php",
                                         {
                                             estatus:estatus,
                                             expediente:expediente,
                                             solucion:""
                                         },function(data)
                                           {
-                                            $.post("http://dotredes.dyndns.biz:18888/dot_izzi/mobile/get_caja.php",{id_expediente:expediente},function(data){
+                                            $.post("http://dotredes.dyndns.biz/dot_izzi/mobile/get_caja.php",{id_expediente:expediente},function(data){
                                             $("#caja_"+expediente).html(data);
                                             swal("El cambio se realizó con éxito.","","success");
                                           });
@@ -268,7 +268,7 @@ function cambiarEstatus(expediente,estatus)
 function validaEncuesta(expediente)
 {
 
-    $.post("http://dotredes.dyndns.biz:18888/dot_izzi/mobile/valida_encuesta.php",{expediente:expediente},function(data){
+    $.post("http://dotredes.dyndns.biz/dot_izzi/mobile/valida_encuesta.php",{expediente:expediente},function(data){
         //alert("ENCUESTA "+data);
         if( data < 2 ){
             swal("Alto!!!","Falta contestar la encuesta","error");
@@ -285,7 +285,7 @@ function validaEncuesta(expediente)
 function validaFirma(expediente)
 {
 
-    $.post("http://dotredes.dyndns.biz:18888/dot_izzi/mobile/valida_firma.php",{expediente:expediente},function(data){
+    $.post("http://dotredes.dyndns.biz/dot_izzi/mobile/valida_firma.php",{expediente:expediente},function(data){
         //alert("FIRMA"+data)
         if( data.length <= 0 ){
             swal("Alto","Falta la firma del usuario","error");
@@ -297,7 +297,7 @@ function validaFirma(expediente)
 }
 function validaAdjunto(expediente,estatus)
 {
-    $.post("http://dotredes.dyndns.biz:18888/dot_izzi/mobile/valida_adjunto.php",{expediente:expediente},function(data){
+    $.post("http://dotredes.dyndns.biz/dot_izzi/mobile/valida_adjunto.php",{expediente:expediente},function(data){
             //alert("adjunto "+data);
             if(data <= 0)
             {
@@ -317,13 +317,13 @@ function validaAdjunto(expediente,estatus)
                     function()
                     {
                      var diagnostico=$("#txt_diagnostico_"+expediente).prop("value");
-                      $.post("http://dotredes.dyndns.biz:18888/dot_izzi/control/cambiar_estatus.php",{
+                      $.post("http://dotredes.dyndns.biz/dot_izzi/control/cambiar_estatus.php",{
                       estatus:estatus,
                       expediente:expediente,
                       solucion:diagnostico
                       },function(data)
                       {
-                      $.post("http://dotredes.dyndns.biz:18888/dot_izzi/mobile/get_caja.php",{id_expediente:expediente},function(data){
+                      $.post("http://dotredes.dyndns.biz/dot_izzi/mobile/get_caja.php",{id_expediente:expediente},function(data){
                        $("#caja_"+expediente).html(data);
                          swal("El cambio se realizó con éxito.","","success");
                         });
@@ -347,12 +347,12 @@ function comentar(expediente)
     if (inputValue === "") {
     swal.showInputError("El campo no debe estár vacio!");
     return false   }
-    $.post("http://dotredes.dyndns.biz:18888/dot_izzi/control/agregar_comentario.php",{
+    $.post("http://dotredes.dyndns.biz/dot_izzi/control/agregar_comentario.php",{
         id_empleado:window.localStorage.getItem("id_empleado"),
         id_expediente:expediente,
         comentario:inputValue
     },function(data){
-        $.post("http://dotredes.dyndns.biz:18888/dot_izzi/mobile/get_caja.php",{id_expediente:expediente},function(data){
+        $.post("http://dotredes.dyndns.biz/dot_izzi/mobile/get_caja.php",{id_expediente:expediente},function(data){
            $("#caja_"+expediente).html(data);
            /*swal("OK!", "Tu comentario se ha insertado con éxito", "success");*/ });
            });
@@ -371,7 +371,7 @@ function buscarFecha()
     {
         if(hayConexion)
         {
-            $.post("http://dotredes.dyndns.biz:18888/dot_izzi/mobile/get_expedientes_fecha.php",{
+            $.post("http://dotredes.dyndns.biz/dot_izzi/mobile/get_expedientes_fecha.php",{
             id_empleado:window.localStorage.getItem("id_empleado"),
             fecha:fecha
             },function(data){
@@ -392,7 +392,7 @@ function buscarExpediente()
         {
             //if(hayConexion)
             //{
-                $.post("http://dotredes.dyndns.biz:18888/dot_izzi/mobile/get_expedientes_expediente.php",{
+                $.post("http://dotredes.dyndns.biz/dot_izzi/mobile/get_expedientes_expediente.php",{
                 id_empleado:window.localStorage.getItem("id_empleado"),
                 expediente:expediente
                 },function(data){
@@ -413,7 +413,7 @@ function buscarExpediente()
 }
 function irExpediente(expediente)
 {
-    $.post("http://dotredes.dyndns.biz:18888/dot_izzi/mobile/get_expedientes_expediente.php",{
+    $.post("http://dotredes.dyndns.biz/dot_izzi/mobile/get_expedientes_expediente.php",{
     id_empleado:window.localStorage.getItem("id_empleado"),
     expediente:expediente
     },function(data){
@@ -482,7 +482,7 @@ function onCapturePhoto(fileURI) {
     options.params = params;
     swal("Espera!!!","La imagen se está procesando");
     var ft = new FileTransfer();
-    ft.upload(fileURI, encodeURI("http://dotredes.dyndns.biz:18888/dot_izzi/control/guardar_imagen.php"),win, fail, options);
+    ft.upload(fileURI, encodeURI("http://dotredes.dyndns.biz/dot_izzi/control/guardar_imagen.php"),win, fail, options);
 }
 
 function capturePhoto() {
@@ -497,9 +497,9 @@ function onFail(message) {
     //alert('Failed because: ' + message);
 }
 
-//http://dotredes.dyndns.biz:18888/dot_izzi/test.php
+//http://dotredes.dyndns.biz/dot_izzi/test.php
 function verAdjuntos(expediente){
-    $.post("http://dotredes.dyndns.biz:18888/dot_izzi/mobile/get_imagenes.php",{expediente:expediente},function(data){
+    $.post("http://dotredes.dyndns.biz/dot_izzi/mobile/get_imagenes.php",{expediente:expediente},function(data){
     swal({ html:true, title:'<h6>Imagenes adjuntas</h6>', text:data});
     });
 
@@ -508,7 +508,7 @@ function eliminarFoto(id,expediente)
 {
     if(confirm("¿Realmente deseas eliminar esta foto?"))
     {
-        $.post("http://dotredes.dyndns.biz:18888/dot_izzi/mobile/eliminar_foto.php",{id:id},function(data){
+        $.post("http://dotredes.dyndns.biz/dot_izzi/mobile/eliminar_foto.php",{id:id},function(data){
                 alert("Imagen eliminada");
                 verAdjuntos(expediente);
             });
@@ -546,7 +546,7 @@ var r5=$("#r5").prop("value");
 var r6=$("#r6").prop("value");
 var r7=$("#r7").prop("value");
 var r8=$("#r8").prop("value");
-$.post("http://dotredes.dyndns.biz:18888/dot_izzi/control/guardar_encuesta.php",{
+$.post("http://dotredes.dyndns.biz/dot_izzi/control/guardar_encuesta.php",{
 expediente:expediente,
 r1:r1,
 r2:r2,
@@ -565,13 +565,13 @@ swal("Ok!!!","Encuesta almacenada con éxito","success");
 
 function firma(expediente)
 {
-     window.open('http://dotredes.dyndns.biz:18888/dot_izzi/mobile/firma/index.php?exp='+expediente,'_blank','location=yes');
+     window.open('http://dotredes.dyndns.biz/dot_izzi/mobile/firma/index.php?exp='+expediente,'_blank','location=yes');
 
 }
 function verFirma(expediente)
 {
 
-    var ruta='<img src="http://dotredes.dyndns.biz:18888/dot_izzi/mobile/firma/img_firmas/firma_'+expediente+'.png" style="width:200px" />';
+    var ruta='<img src="http://dotredes.dyndns.biz/dot_izzi/mobile/firma/img_firmas/firma_'+expediente+'.png" style="width:200px" />';
 
     swal({
     html:true,
@@ -598,16 +598,16 @@ function showBuscar()
 function documentacion()
 {
     var html='<div style="width:100%;height:300px;overflow:scroll;">';
-    html+='<a href="http://dotredes.dyndns.biz:18888/dot_izzi/mobile/documentacion/manual_procedimientos.pdf" style="color:blue;">Manual de procedimientos</a><br><br>';
-    html+='<a href="http://dotredes.dyndns.biz:18888/dot_izzi/mobile/documentacion/refuerzo_lineamientos.pdf" style="color:blue;">Refuerzo de Lineamientos</a><br><br>';
-    html+='<a href="http://dotredes.dyndns.biz:18888/dot_izzi/mobile/documentacion/capacitacion_red_proveedores.pptx" style="color:blue;">Capacitación Red Proveedores IKE asistencia</a><br><br>';
-    html+='<a href="http://dotredes.dyndns.biz:18888/dot_izzi/mobile/documentacion/checklist.pdf" style="color:blue;">CheckList</a><br><br>';
-    html+='<a href="http://dotredes.dyndns.biz:18888/dot_izzi/mobile/documentacion/cobertura.pdf" style="color:blue;">Cobertura</a><br><br>';
-    html+='<a href="http://dotredes.dyndns.biz:18888/dot_izzi/mobile/documentacion/faq.pdf" style="color:blue;">FAQ</a><br><br>';
-    html+='<a href="http://dotredes.dyndns.biz:18888/dot_izzi/mobile/documentacion/equipos_modems_emtas.docx" style="color:blue;">Equipos (Modems. emtas)</a><br><br>';
-    html+='<a href="http://dotredes.dyndns.biz:18888/dot_izzi/mobile/documentacion/emta_arris_tg862g.pdf" style="color:blue;">EMTA ARRIS TG862</a><br><br>';
-    html+='<a href="http://dotredes.dyndns.biz:18888/dot_izzi/mobile/documentacion/emta_ubbee_u10c059.pdf" style="color:blue;">EMTA UBBEE U10C059</a><br><br>';
-    html+='<a href="http://dotredes.dyndns.biz:18888/dot_izzi/mobile/documentacion/Ubee_dvw_324.pdf" style="color:blue;">UBEE DVW 324</a><br><br>';
+    html+='<a href="http://dotredes.dyndns.biz/dot_izzi/mobile/documentacion/manual_procedimientos.pdf" style="color:blue;">Manual de procedimientos</a><br><br>';
+    html+='<a href="http://dotredes.dyndns.biz/dot_izzi/mobile/documentacion/refuerzo_lineamientos.pdf" style="color:blue;">Refuerzo de Lineamientos</a><br><br>';
+    html+='<a href="http://dotredes.dyndns.biz/dot_izzi/mobile/documentacion/capacitacion_red_proveedores.pptx" style="color:blue;">Capacitación Red Proveedores IKE asistencia</a><br><br>';
+    html+='<a href="http://dotredes.dyndns.biz/dot_izzi/mobile/documentacion/checklist.pdf" style="color:blue;">CheckList</a><br><br>';
+    html+='<a href="http://dotredes.dyndns.biz/dot_izzi/mobile/documentacion/cobertura.pdf" style="color:blue;">Cobertura</a><br><br>';
+    html+='<a href="http://dotredes.dyndns.biz/dot_izzi/mobile/documentacion/faq.pdf" style="color:blue;">FAQ</a><br><br>';
+    html+='<a href="http://dotredes.dyndns.biz/dot_izzi/mobile/documentacion/equipos_modems_emtas.docx" style="color:blue;">Equipos (Modems. emtas)</a><br><br>';
+    html+='<a href="http://dotredes.dyndns.biz/dot_izzi/mobile/documentacion/emta_arris_tg862g.pdf" style="color:blue;">EMTA ARRIS TG862</a><br><br>';
+    html+='<a href="http://dotredes.dyndns.biz/dot_izzi/mobile/documentacion/emta_ubbee_u10c059.pdf" style="color:blue;">EMTA UBBEE U10C059</a><br><br>';
+    html+='<a href="http://dotredes.dyndns.biz/dot_izzi/mobile/documentacion/Ubee_dvw_324.pdf" style="color:blue;">UBEE DVW 324</a><br><br>';
     html+='</div>';
     swal({
     html:true,
@@ -634,12 +634,12 @@ function terminarPendiente(id)
         if (inputValue === "") {
         swal.showInputError("El campo no debe estár vacio!");
         return false   }
-        $.post("http://dotredes.dyndns.biz:18888/dot_izzi/control/terminar_pendiente.php",{
+        $.post("http://dotredes.dyndns.biz/dot_izzi/control/terminar_pendiente.php",{
             id:id,
             comentario:inputValue
         },function(data){
 
-                $.post("http://dotredes.dyndns.biz:18888/dot_izzi/mobile/get_pendientes.php",{
+                $.post("http://dotredes.dyndns.biz/dot_izzi/mobile/get_pendientes.php",{
                  id_empleado:window.localStorage.getItem("id_empleado")
                  },function(data){
                   $("#contenedor_pendiente").html(data);
@@ -663,12 +663,12 @@ function comentarPendiente(pendiente)
             if (inputValue === "") {
             swal.showInputError("El campo no debe estár vacio!");
             return false   }
-            $.post("http://dotredes.dyndns.biz:18888/dot_izzi/control/agregar_comentario_pendiente.php",{
+            $.post("http://dotredes.dyndns.biz/dot_izzi/control/agregar_comentario_pendiente.php",{
                 empleado:window.localStorage.getItem("id_empleado"),
                 id_pendiente:pendiente,
                 comentario:inputValue
             },function(data){
-                    $.post("http://dotredes.dyndns.biz:18888/dot_izzi/mobile/get_pendientes.php",{
+                    $.post("http://dotredes.dyndns.biz/dot_izzi/mobile/get_pendientes.php",{
                      id_empleado:window.localStorage.getItem("id_empleado")
 
                      },function(data){
@@ -677,4 +677,27 @@ function comentarPendiente(pendiente)
                       });
                    });
              });
+}
+
+function guardarPendiente()
+{
+    var titulo=$("#txt_titulo_pendiente").prop('value');
+    var fecha=$("#txt_fecha_pendiente").prop('value');
+    var hora=$("#txt_hora_pendiente").prop('value');
+    var empleado=$("#txt_empleado_pendiente").prop('value');
+    var descripcion=$("#txt_descripcion_pendiente").prop('value');
+    $.post('http://dotredes.dyndns.biz/dot_izzi/control/guardar_pendiente.php',{
+    titulo:titulo,
+    fecha:fecha,
+    hora:hora,
+    empleado:empleado,
+    descripcion:descripcion
+    },function(data){
+        swal('Mensaje','Pendiente guardado!!!','success');
+        $("#txt_titulo_pendiente").prop('value','');
+        $("#txt_fecha_pendiente").prop('value','');
+        $("#txt_hora_pendiente").prop('value','');
+        $("#txt_empleado_pendiente").prop('value','');
+        $("#txt_descripcion_pendiente").prop('value','');
+    });
 }
